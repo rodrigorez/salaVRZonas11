@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Galeria Virtual Básica</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+
+    <script>
+      AFRAME.registerComponent('image-gallery', {
+        schema: {
+          images: { type: 'array', default: [] }
+        },
+        init: function () {
+          this.currentImageIndex = 0;
+          this.images = this.data.images;
+          this.el.setAttribute('src', this.images[this.currentImageIndex]);
+
+          this.el.addEventListener('click', () => {
+            this.currentImageIndex = (this.currentImageIndex + 1) % this.images.length;
+            this.el.setAttribute('src', this.images[this.currentImageIndex]);
+          });
+        }
+      });
+
+      AFRAME.registerComponent('navigate-on-click', {
+        schema: {
+          url: { type: 'string', default: '' }
+        },
+        init: function () {
+          this.el.addEventListener('click', () => {
+            window.location.href = this.data.url;
+          });
+        }
+      });
+    </script>
+  </head>
+  <body>
+    <a-scene>
+      <a-camera>
+        <a-cursor></a-cursor>
+      </a-camera>
+
+      <a-assets>
+        <img id="img1" src="img/sky.jpg" crossorigin="anonymous">
+        <img id="img2" src="https://aframe.io/a-saturday-night/assets/images/sky-2.jpg" crossorigin="anonymous">
+        <img id="galeriaFoto1" src="https://aframe.io/a-saturday-night/assets/images/a-saturday-night-logo.png" crossorigin="anonymous">
+        <img id="galeriaFoto2" src="https://aframe.io/a-saturday-night/assets/images/a-saturday-night-logo.png" crossorigin="anonymous">
+        <img id="galeriaFoto3" src="https://aframe.io/a-saturday-night/assets/images/a-saturday-night-logo.png" crossorigin="anonymous">
+        <img id="skyTexture" src="/img/ceu.jpeg" crossorigin="anonymous">
+
+        <video id="video" src="img/compequi.mp4" crossorigin="anonymous" autoplay loop="true"></video>
+      </a-assets>
+
+      <a-sky src="#skyTexture"></a-sky>
+
+      <a-box 
+        src="#img1" 
+        position="-4 1.5 -5" 
+        rotation="0 15 0" 
+        width="4" 
+        height="3" 
+        depth="0.1"
+        navigate-on-click="url: video1.html">
+      </a-box>
+
+      <a-box src="#img2" 
+      position="0 1.5 -5" 
+      width="4" 
+      height="3" 
+      depth="0.1"
+      navigate-on-click="url: site.html">
+    </a-box>
+
+      <a-box src="#video" position="4 1.5 -5" rotation="0 -15 0" width="4" height="3" depth="0.1"></a-box>
+
+      <a-box 
+        image-gallery="images: #galeriaFoto1, #galeriaFoto2, #galeriaFoto3" 
+        position="0 1.5 5" 
+        rotation="0 180 0" 
+        width="4" 
+        height="3" 
+        depth="0.1">
+      </a-box>
+      
+      <a-link
+        href="index.html"
+        title="Voltar"
+        position="-6 2 0"
+        rotation="0 90 0"
+        scale="2 2 2"
+        color="#FFFFFF">
+      </a-link>
+
+      <a-plane color="#333333" rotation="-90 0 0" width="20" height="20"></a-plane>
+    </a-scene>
+  </body>
+</html>
